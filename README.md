@@ -22,9 +22,7 @@ Use the existing project that you have done during the BE internship to add extr
 You will need to implement:
 
 A table of Employees containing all the required properties;
-
 All the required functions to move the data around;
-
 I recommend you use axios to communicate with the backend.
 
 # project
