@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "dgSpecHash": "EAPpb4PtWfZms4lLRNouOGt2FRXCd66+DICBy264mp3c3xjxdWNmyCtm1YSLnXu6PgMkZDdpBvF6cbPynaU4ig==",
+  "success": true,
+  "projectFilePath": "C:\\Projects\\FrontEnd - Marian\\(5) CMS_VUE_FE_BE\\Backend\\Backend_CMS.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\PatrickPacurar\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\3.1.10\\microsoft.aspnetcore.app.ref.3.1.10.nupkg.sha512",
+    "C:\\Users\\PatrickPacurar\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\3.1.0\\microsoft.windowsdesktop.app.ref.3.1.0.nupkg.sha512",
+    "C:\\Users\\PatrickPacurar\\.nuget\\packages\\microsoft.netcore.app.ref\\3.1.0\\microsoft.netcore.app.ref.3.1.0.nupkg.sha512",
+    "C:\\Users\\PatrickPacurar\\.nuget\\packages\\microsoft.netcore.app.host.win-x86\\3.1.17\\microsoft.netcore.app.host.win-x86.3.1.17.nupkg.sha512"
+  ],
+  "logs": []
+}
