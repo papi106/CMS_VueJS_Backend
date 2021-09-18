@@ -32,7 +32,7 @@
 
         <!--Filter buttons-->
         <div class="filter">
-            <p class="filtreaza">Filtrează după:</p>
+            <div class="filtru-txt">Filtrează după:</div>
 
             <select class="form-group">
                 <option value="" selected>Sex</option>
@@ -143,3 +143,88 @@
     </main>
 
 </template>
+
+<style>
+
+.container {
+  margin-bottom: 3%;
+  margin-top: 3%;
+  font-family: "Karla", sans-serif;
+  font-size: large;
+}
+
+table {
+  table-layout: fixed;
+  word-wrap: break-word;
+  margin: auto;
+  width: 80% !important;
+  font-family: "Karla", sans-serif;
+  text-align: center;
+}
+
+table th {
+  font-size: 18px;
+  color: white;
+  vertical-align: middle;
+}
+
+td {
+  vertical-align: middle;
+}
+
+.stergere:hover {
+  cursor: pointer;
+}
+
+#modalButton {
+  float: right;
+  margin-right: 45%;
+  margin-top: 2%;
+  margin-bottom: 5%;
+}
+
+.input-group {
+  display: flex;
+  justify-content: center;
+  max-width: 200px;
+}
+
+.search-sort {
+  display: flex;
+  justify-content: space-between;
+  margin-right: 10.5%;
+  margin-left: 10%;
+  margin-bottom: 0.5rem;
+}
+
+.sorter,
+.search-bar {
+  display: flex;
+  margin-bottom: 0.5rem;
+}
+
+.form-group {
+  margin-right: 2%;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  padding: 0.25rem 0.75rem;
+}
+
+.filter {
+  display: flex;
+  align-items: center;
+  margin-left: 10%;
+  margin-bottom: 0.5rem;
+}
+
+.filtru-txt {
+  margin-right: 2%;
+}
+
+.picture {
+  height: 80;
+  width: 80;
+  border-radius: 50%;
+}
+
+</style>

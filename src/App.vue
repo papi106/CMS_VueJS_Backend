@@ -31,135 +31,6 @@ header {
   background-color: #142850;
 }
 
-.nav {
-  display: flex;
-  justify-content: space-between;
-}
-
-.navlogo {
-  padding: 0.3rem;
-  margin-left: 2%;
-  margin-top: 4px;
-  display: flex;
-  color: whitesmoke;
-  font-size: 26px;
-  font-family: "Karla", sans-serif;
-}
-
-.navitems {
-  display: flex;
-  margin-right: 2%;
-}
-
-.logo,
-.logo:hover {
-  color: whitesmoke;
-  text-decoration: none;
-}
-
-.nav-ul {
-  width: auto;
-  float: right;
-  margin-top: 5px;
-}
-
-li {
-  display: inline-block;
-  padding: 10px 15px;
-}
-
-li a {
-  padding: 5px;
-  text-align: center;
-  color: whitesmoke;
-  text-decoration: none;
-  font-size: 18px;
-  font-family: "Karla", sans-serif;
-}
-
-li a:hover {
-  background-color: whitesmoke;
-  color: black;
-  border-radius: 4px;
-  text-decoration: none;
-}
-
-.container {
-  margin-bottom: 3%;
-  margin-top: 3%;
-  font-family: "Karla", sans-serif;
-  font-size: large;
-}
-
-table {
-  table-layout: fixed;
-  word-wrap: break-word;
-  margin: auto;
-  width: 80% !important;
-  font-family: "Karla", sans-serif;
-  text-align: center;
-}
-
-table th {
-  font-size: 18px;
-  color: white;
-  vertical-align: middle;
-}
-
-td {
-  vertical-align: middle;
-}
-
-.stergere:hover {
-  cursor: pointer;
-}
-
-#modalButton {
-  float: right;
-  margin-right: 45%;
-  margin-top: 2%;
-  margin-bottom: 5%;
-}
-
-.input-group {
-  display: flex;
-  justify-content: center;
-  max-width: 200px;
-}
-
-.search-sort {
-  display: flex;
-  justify-content: space-between;
-  margin-right: 10.5%;
-  margin-left: 10%;
-  margin-bottom: 0.5rem;
-}
-
-.sorter,
-.search-bar {
-  display: flex;
-  margin-bottom: 0.5rem;
-}
-
-.form-group {
-  margin-right: 2%;
-  border: 1px solid #ced4da;
-  border-radius: 0.25rem;
-  padding: 0.25rem 0.75rem;
-}
-
-.filter {
-  display: flex;
-  margin-left: 10%;
-  margin-bottom: 0.5rem;
-}
-
-.picture {
-  height: 80;
-  width: 80;
-  border-radius: 50%;
-}
-
 @media only screen and (max-width: 835px) {
   header {
     height: fit-content;
@@ -182,6 +53,7 @@ td {
     flex-direction: column;
     flex-wrap: wrap;
     max-width: 200px;
+    align-items:flex-start;
   }
 
   .filter .form-group {
