@@ -171,7 +171,7 @@ namespace Backend_CMS.Controllers
             catch (Exception)
             {
 
-                return new JsonResult("anonymous.png");
+                return new JsonResult("profile_pic.png");
             }
         }
     }

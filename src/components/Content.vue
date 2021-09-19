@@ -12,7 +12,7 @@
             <div class="search-bar">
                 <div class="input-group">
                     <div class="form-outline">
-                        <input type="search" id="search-employee" onkeyup="searchEmployee()" class="form-control" placeholder="Caută angajat ..."/>
+                        <input type="search" class="form-control" placeholder="Caută angajat ..." v-model="filterText"/>
                     </div>
                 </div>
             </div>
@@ -58,15 +58,29 @@
             <div class="table-responsive">
                 <table class="table table-bordered border-dark" id="table-employees">
                     <thead style="background-color: #27496D;">
-                        <th style="width:25%">Poză</th>
-                        <th style="width:15%">Nume</th>
-                        <th style="width:15%">Prenume</th>
-                        <th style="width:25%">Email</th>
-                        <th style="width:15%">Sex</th>
-                        <th style="width:20%">Data nașterii</th>
-                        <th style="width:15%">Acțiuni</th>
+                        <tr>
+                            <th style="width:25%">Poză</th>
+                            <th style="width:15%">Nume</th>
+                            <th style="width:15%">Prenume</th>
+                            <th style="width:25%">Email</th>
+                            <th style="width:15%">Sex</th>
+                            <th style="width:20%">Data nașterii</th>
+                            <th style="width:15%">Acțiuni</th>
+                        </tr>
                     </thead>
-                    <tbody id="table-employees">
+                    <tbody>
+                        <tr v-for="emp in employees" v-bind:key="emp" v-bind:emp="emp" @click="filteredEmployees">
+                            <td>{{ emp.ProfilePhoto }}</td>
+                            <td>{{ emp.EmployeeLastName }}</td>
+                            <td>{{ emp.EmployeeFirstName }}</td>
+                            <td>{{ emp.EmployeeEmail }}</td>
+                            <td>{{ emp.EmployeeGender }}</td>
+                            <td>{{ moment(emp.EmployeeBirthday).format("DD MMM YYYY") }}</td>
+                            <td class="action-buttons">
+                                <div @click="editClick(emp)"><img src="../assets/edit.svg"></div> |
+                                <div @click="deleteClick(emp)"><img src="../assets/trash.svg"></div>
+                            </td>
+                        </tr>
                     </tbody>
                   </table>            
             </div>
@@ -75,7 +89,8 @@
         <!--Input form for adding employee-->
 
         <!-- Button trigger modal -->
-        <button type="button" class="btn" style="background-color: #27496D; color:white;" id="modalButton" data-bs-toggle="modal" data-bs-target="#myModal">
+        <button type="button" class="btn" style="background-color: #27496D; color:white;" 
+            data-bs-toggle="modal" data-bs-target="#myModal" id="modalButton" @click="addClick()">
             Adaugă angajat
         </button>
         
@@ -84,31 +99,33 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">Adaugă un angajat</h5>
+                        <h5 class="modal-title" id="exampleModalLongTitle">{{ modalTitle }}</h5>
                         <button type="button" class="btn-close close-myModal" data-bs-dismiss="modal"></button>
                     </div>
 
                     <div class="modal-body">
-
                         <form>
                             <div class="mb-3">
                                 <label for="last-name" class="form-label">Nume</label>
-                                <input type="text" class="form-control" id="last-name" placeholder="Introdu numele" required>
+                                <input type="text" class="form-control" id="last-name" placeholder="Introdu numele" required 
+                                v-model="EmployeeLastName">
                             </div>
                     
                             <div class="mb-3">
                                 <label for="first-name" class="form-label">Prenume</label>
-                                <input type="text" class="form-control" id="first-name" placeholder="Introdu prenumele" required>
+                                <input type="text" class="form-control" id="first-name" placeholder="Introdu prenumele" required
+                                v-model="EmployeeFirstName">
                             </div>
                     
                             <div class="mb-3">
                                 <label for="email-input" class="form-label">Adresă e-mail</label>
-                                <input type="email" class="form-control" id="email-input" placeholder="name@example.com" required>
+                                <input type="email" class="form-control" id="email-input" placeholder="name@example.com" required
+                                v-model="EmployeeEmail">
                             </div>
                             
                             <div class="mb-3">
                                 <label for="gender-input" class="form-label">Sex</label>
-                                <select class="form-select" id="gender-input" required>
+                                <select class="form-select" id="gender-input" required v-model="EmployeeGender">
                                     <option value="" selected disabled>Selectați sexul</option>
                                     <option value="Masculin">Masculin</option>
                                     <option value="Feminin">Feminin</option>
@@ -118,14 +135,14 @@
                 
                             <div class="mb-3">
                                 <label for="birthdate-input" class="form-label">Data nașterii</label>
-                                <input type="date" class="form-control" id="birthdate-input" placeholder="" required>
+                                <input type="date" class="form-control" id="birthdate-input" placeholder="" required v-model="EmployeeBirthday">
                             </div>
                     
                             <div class="mb-3">
                                 <label for="picture" class="form-label">Adaugă poză</label>
-                                <input class="form-control" type="file" id="picture" onchange="showMyImage(this)" accept="image/*">
+                                <input class="form-control" type="file" id="picture" @change="imageUpload">
                                 <br>
-                                <img id="imgPreview" src="../assets/profile_pic.png" height=150>
+                                <img :src="PhotoPath + ProfilePhoto" height=150>
                             </div>
 
                         </form>
@@ -133,8 +150,17 @@
                     
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-secondary close-myModal" data-bs-dismiss="modal">Renunță</button>
-                        <button type="submit" class="btn" style="background-color:#27496D; color:white;" id="add-employee-button">
-                            Adaugă angajat
+
+                        <button type="submit" class="btn" style="background-color:#27496D; color:white;"
+                                @click="updateClick()"
+                                v-if="EmployeeId !== 0">
+                                Actualizează angajat
+                        </button>
+
+                        <button type="submit" class="btn" style="background-color:#27496D; color:white;"
+                                @click="createClick()"
+                                v-if="EmployeeId == 0">
+                                Adaugă angajat
                         </button>
                     </div>
                 </div>
@@ -143,6 +169,115 @@
     </main>
 
 </template>
+
+<script>
+
+import axios from "axios";
+import moment from "moment";
+
+const variables = {
+  API_URL: "http://localhost:31080/api/",
+  PHOTO_URL: "http://localhost:31080/photos/",
+};
+
+//const reg = /^[w-.]+@([w-]+.)+[w-]{2,}$/g;
+
+export default {
+    data() {
+        return {
+            employees: [],
+            filterText: "",
+            modalTitle: "",
+            EmployeeId: 0,
+            EmployeeFirstName: "",
+            EmployeeLastName: "",
+            EmployeeEmail: "",
+            EmployeeGender: "",
+            EmployeeBirthday: "",
+            ProfilePhoto: "profile_pic.png",
+            PhotoPath: variables.PHOTO_URL,
+        };
+    },
+
+    methods: {
+
+        moment: moment,
+
+        refreshData() {
+            axios.get(variables.API_URL + "employee").then((response) => {
+                this.employees = response.data;
+            });
+        },
+
+        addClick() {
+        this.modalTitle = "Add Employee";
+        this.EmployeeId = 0;
+        this.EmployeeLastName = "";
+        this.EmployeeFirstName = "";
+        this.EmployeeEmail = "";
+        this.EmployeeGender = "";
+        this.EmployeeBirthday = "",
+        this.ProfilePhoto = "profile_pic.png";
+        },
+
+        editClick(emp) {
+            this.modalTitle = "Edit Employee";
+            this.EmployeeId = emp.EmployeeId;
+            this.EmployeeLastName = emp.EmployeeLastName;
+            this.EmployeeFirstName = emp.EmployeeFirstName;
+            this.EmployeeEmail = emp.EmployeeEmail;
+            this.EmployeeGender = emp.EmployeeGender;
+            this.EmployeeBirthday = emp.EmployeeBirthday;
+            this.ProfilePhoto = emp.ProfilePhoto;
+        },
+
+        createClick() {
+            this.EmployeeBirthday = moment(this.EmployeeBirthday);
+            
+            if (this.EmployeeLastName === "") {
+                alert("Enter Last Name");
+                return false;
+            }
+            if (this.EmployeeFirstName === "") {
+                alert("Enter First Name");
+                return false;
+            }
+            if (this.EmployeeEmail === "") {
+                alert("Enter Email");
+                return false;
+            }
+            if (this.EmployeeGender === "") {
+                alert("Enter Gender");
+                return false;
+            }
+            if (this.EmployeeBirthday === "") {
+                alert("Enter Birthday");
+                return false;
+            }
+            //if (!reg.test(this.EmployeeEmail)) {
+            //    alert("Email not valid.");
+            //    return false;
+            //}
+
+            axios
+                .post(variables.API_URL + "employee", {
+                    EmployeeLastName: this.EmployeeLastName,
+                    EmployeeFirstName: this.EmployeeFirstName,
+                    EmployeeEmail: this.EmployeeEmail,
+                    EmployeeGender: this.EmployeeGender,
+                    EmployeeBirthday: this.EmployeeBirthday,
+                    ProfilePhoto: this.ProfilePhoto,
+                })
+                .then((response) => {
+                    this.refreshData();
+                        alert(response.data);
+                });
+            },
+            
+    },
+};
+</script>
+
 
 <style>
 
@@ -226,5 +361,4 @@ td {
   width: 80;
   border-radius: 50%;
 }
-
 </style>
