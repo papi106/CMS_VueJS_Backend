@@ -150,6 +150,7 @@ namespace Backend_CMS.Controllers
             return new JsonResult("Deleted Successfully");
         }
 
+        //Save photo from folder
         [Route("SaveFile")]
         [HttpPost]
         public JsonResult SaveFile()
@@ -170,7 +171,7 @@ namespace Backend_CMS.Controllers
             catch (Exception)
             {
 
-                return new JsonResult("profile_pic.png");
+                return new JsonResult("anonymous.png");
             }
         }
     }
