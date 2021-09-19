@@ -1,9 +1,14 @@
 {
   "version": 2,
-  "dgSpecHash": "EAPpb4PtWfZms4lLRNouOGt2FRXCd66+DICBy264mp3c3xjxdWNmyCtm1YSLnXu6PgMkZDdpBvF6cbPynaU4ig==",
+  "dgSpecHash": "vIMK9HRE33Yl0W3WUJZ/pVXWCFLAS5x/m3qy+f3ulEZYkVBK8/sqaa88dNya7yY/1R3qVVyN/n9mM7Qqpl8Z2A==",
   "success": true,
-  "projectFilePath": "C:\\Projects\\FrontEnd - Marian\\(5) CMS_VUE_FE_BE\\Backend\\Backend_CMS.csproj",
+  "projectFilePath": "C:\\Projects\\FrontEnd - Marian\\(5) CMS_VUE_FE_BE\\.Backend\\Backend_CMS.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\PatrickPacurar\\.nuget\\packages\\microsoft.aspnetcore.jsonpatch\\3.1.16\\microsoft.aspnetcore.jsonpatch.3.1.16.nupkg.sha512",
+    "C:\\Users\\PatrickPacurar\\.nuget\\packages\\microsoft.aspnetcore.mvc.newtonsoftjson\\3.1.16\\microsoft.aspnetcore.mvc.newtonsoftjson.3.1.16.nupkg.sha512",
+    "C:\\Users\\PatrickPacurar\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
+    "C:\\Users\\PatrickPacurar\\.nuget\\packages\\newtonsoft.json\\12.0.2\\newtonsoft.json.12.0.2.nupkg.sha512",
+    "C:\\Users\\PatrickPacurar\\.nuget\\packages\\newtonsoft.json.bson\\1.0.2\\newtonsoft.json.bson.1.0.2.nupkg.sha512",
     "C:\\Users\\PatrickPacurar\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\3.1.10\\microsoft.aspnetcore.app.ref.3.1.10.nupkg.sha512",
     "C:\\Users\\PatrickPacurar\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\3.1.0\\microsoft.windowsdesktop.app.ref.3.1.0.nupkg.sha512",
     "C:\\Users\\PatrickPacurar\\.nuget\\packages\\microsoft.netcore.app.ref\\3.1.0\\microsoft.netcore.app.ref.3.1.0.nupkg.sha512",
