@@ -62,10 +62,10 @@
                             <th style="width:25%">Poză</th>
                             <th style="width:15%">Nume</th>
                             <th style="width:15%">Prenume</th>
-                            <th style="width:25%">Email</th>
+                            <th style="width:30%">Email</th>
                             <th style="width:15%">Sex</th>
                             <th style="width:20%">Data nașterii</th>
-                            <th style="width:15%">Acțiuni</th>
+                            <th style="width:10%">Acțiuni</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -75,14 +75,17 @@
                             <td>{{ emp.EmployeeFirstName }}</td>
                             <td>{{ emp.EmployeeEmail }}</td>
                             <td>{{ emp.EmployeeGender }}</td>
-                            <td>{{ moment(emp.EmployeeBirthday).format("DD MMM YYYY") }}</td>
-                            <td class="action-buttons">
-                                <button type="button" data-bs-toggle="modal" data-bs-target="#myModal" @click="editClick(emp)">
-                                    <img src="../assets/edit.svg">
-                                </button>
-                                <button type="button" @click="deleteClick(emp.EmployeeId)">
-                                    <img src="../assets/trash.svg">
-                                </button>
+                            <td>{{ emp.EmployeeBirthday }}</td>
+                            <td>
+                                <div class="action-buttons">
+                                    <span type="button" data-bs-toggle="modal" data-bs-target="#myModal" @click="editClick(emp)">
+                                        <img src="../assets/edit.svg">
+                                    </span>
+
+                                    <span type="button" @click="deleteClick(emp.EmployeeId)">
+                                        <img src="../assets/trash.svg">
+                                    </span>
+                                </div>
                             </td>
                         </tr>
                     </tbody>
@@ -157,15 +160,8 @@
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-secondary close-myModal" data-bs-dismiss="modal">Renunță</button>
 
-                        <button type="submit" class="btn" style="background-color:#27496D; color:white;"
-                                @click="updateClick()"
-                                v-if="EmployeeId !== 0">
-                                Actualizează angajat
-                        </button>
-
-                        <button type="submit" class="btn" style="background-color:#27496D; color:white;"
-                                @click="createClick()"
-                                v-if="EmployeeId == 0">
+                        <button type="submit" class="btn" style="background-color:#27496D; color:white;" data-bs-dismiss="modal"
+                                @click="createClick()">
                                 Adaugă angajat
                         </button>
                     </div>
@@ -177,6 +173,107 @@
 </template>
 
 <script>
+
+import axios from "axios";
+import variables from "./../variables";
+
+export default {
+
+    data(){
+        return{
+            employees:[],
+            modalTitle:"",
+            EmplpoyeeId:0,
+            ProfilePhoto:"profile_pic.png",
+            EmployeeLastName:"",
+            EmployeeFirstName:"",
+            EmployeeEmail:"",
+            EmployeeGender:"",
+            EmployeeBirthday:"",
+            PhotoPath:variables.PHOTO_URL
+        }
+    },
+
+    methods: {
+        refreshData(){
+            axios.get(`${variables.API_URL}Employee`)
+                .then(response => {
+                    this.employees = response.data;
+                })
+                .catch(error => {
+                this.errorMessage = error.message;
+                console.error("There was an error!", error);
+            })
+        },
+
+        addClick(){
+            this.modalTitle="Add Employee",
+            this.EmplpoyeeId=0,
+            this.ProfilePhoto="profile_pic.png",
+            this.EmployeeLastName="",
+            this.EmployeeFirstName="",
+            this.EmployeeEmail="",
+            this.EmployeeGender="",
+            this.EmployeeBirthday=""
+        },
+
+        createClick(){
+            axios.post(`${variables.API_URL}Employee`,{
+                ProfilePhoto:this.ProfilePhoto,
+                EmployeeLastName:this.EmployeeLastName,
+                EmployeeFirstName:this.EmployeeFirstName,
+                EmployeeEmail:this.EmployeeEmail,
+                EmployeeGender:this.EmployeeGender,
+                EmployeeBirthday:this.EmployeeBirthday,
+
+            })
+            .then(response => {
+                this.employees = response.data;
+                this.refreshData();
+            })
+            .catch(error => {
+                this.errorMessage = error.message;
+                console.error("There was an error!", error);
+            });
+        },
+
+        // editClick(emp){
+        //     this.modalTitle="Edit Employee",
+        //     this.EmployeeId=emp.EmployeeId,
+        //     this.ProfilePhoto=emp.ProfilePhoto,
+        //     this.EmployeeLastName=emp.EmployeeName,
+        //     this.EmployeeFirstName=emp.EmployeeFirstName,
+        //     this.EmployeeEmail=emp.EmployeeEmail,
+        //     this.EmployeeGender=emp.EmployeeGender,
+        //     this.EmployeeBirthday=emp.EmployeeBirthday
+
+        // },
+
+        // imageUpload(event){
+        //     let formData=new FormData();
+        //     formData.append('file',event.target.files[0]);
+        //     axios.post(
+        //         variables.API_URL+"employee/savefile",
+        //         formData)
+        //         .then((response)=>{
+        //             this.ProfilePhoto=response.data;
+        //         }
+        //     );
+        // },
+
+    },
+
+    mounted() {
+        axios.get(`${variables.API_URL}Employee`)
+            .then(response => {
+                this.employees = response.data;
+            })
+            .catch(error => {
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+        });
+    },
+};
 
 </script>
 
@@ -209,8 +306,9 @@ td {
   vertical-align: middle;
 }
 
-.stergere:hover {
-  cursor: pointer;
+.action-buttons {
+    display: flex;
+    justify-content:space-around;
 }
 
 #modalButton {
