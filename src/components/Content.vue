@@ -161,8 +161,13 @@
                         <button type="submit" class="btn btn-secondary close-myModal" data-bs-dismiss="modal">Renunță</button>
 
                         <button type="submit" class="btn" style="background-color:#27496D; color:white;" data-bs-dismiss="modal"
-                                @click="createClick()">
-                                Adaugă angajat
+                            @click="createClick()">
+                            Adaugă angajat
+                        </button>
+
+                        <button type="submit" class="btn" style="background-color:#27496D; color:white;" data-bs-dismiss="modal"
+                            @click="updateClick()">
+                            Actualizează angajat
                         </button>
                     </div>
                 </div>
@@ -201,6 +206,14 @@ export default {
             return moment(date, "YYYY-MM-DD").format("D MMMM YYYY");
         },
 
+        getAge() {
+            var birthdate = new Date(birthdate);
+            var diff = new Date(Date.now() - birthdate.getTime());
+            var age = diff.getUTCFullYear() - 1970;
+
+            return age >= 16;
+        },
+
         refreshData(){
             axios.get(`${variables.API_URL}Employee`)
                 .then(response => {
@@ -224,6 +237,39 @@ export default {
         },
 
         createClick(){
+            if (this.EmployeeLastName === "") {
+                alert ("Introdu numele!");
+                return false;
+            }
+
+            if (this.EmployeeFirstName === "") {
+                alert ("Introdu prenumele!");
+                return false;
+            }
+
+            if (this.EmployeeEmail === "") {
+                alert ("Introdu un email!");
+                return false;
+            // } else {
+            //     if (!regex.test(this.EmployeeEmail)) {
+            //         alert('Emailul este invalid! Introdu un email valid.');
+            //         return false;
+            //     }
+            }
+
+            if (this.EmployeeGender === "") {
+                alert ("Introdu sexul!");
+                return false;
+            }
+
+            if (this.EmployeeBirthday === "") {
+                alert ("Introdu data nasterii!");
+                return false;
+            // } else if (!getAge(this.EmployeeBirthday)) {
+            //     alert('Trebuie sa ai minim 16 ani.');
+            //     return false;
+            } 
+
             axios.post(`${variables.API_URL}Employee`,{
                 ProfilePhoto:this.ProfilePhoto,
                 EmployeeLastName:this.EmployeeLastName,
@@ -243,13 +289,27 @@ export default {
             this.modalTitle="Edit Employee",
             this.EmployeeId=emp.EmployeeId,
             this.ProfilePhoto=emp.ProfilePhoto,
-            this.EmployeeLastName=emp.EmployeeName,
+            this.EmployeeLastName=emp.EmployeeLastName,
             this.EmployeeFirstName=emp.EmployeeFirstName,
             this.EmployeeEmail=emp.EmployeeEmail,
             this.EmployeeGender=emp.EmployeeGender,
             this.EmployeeBirthday=emp.EmployeeBirthday
-
         },
+
+        updateClick() {
+            axios.post(`${variables.API_URL}Employee`,{
+                ProfilePhoto:this.ProfilePhoto,
+                EmployeeLastName:this.EmployeeLastName,
+                EmployeeFirstName:this.EmployeeFirstName,
+                EmployeeEmail:this.EmployeeEmail,
+                EmployeeGender:this.EmployeeGender,
+                EmployeeBirthday:this.EmployeeBirthday,
+            })
+            .then(response => {
+                this.employees = response.data;
+                this.refreshData();
+            });
+        }
 
         // imageUpload(event){
         //     let formData=new FormData();
