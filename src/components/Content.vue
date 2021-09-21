@@ -149,9 +149,9 @@
                     
                             <div class="mb-3">
                                 <label for="picture" class="form-label">Adaugă poză</label>
-                                <input class="form-control" type="file" id="picture" @change="imageUpload">
+                                <input class="form-control" type="file" id="picture" @change="imageUpload(this)" accept="image/*">
                                 <br>
-                                <img width="150px" height="150px" :src="PhotoPath+ProfilePhoto">
+                                <img class="picture-preview" :src="PhotoPath+ProfilePhoto" id="imgPreview">
                             </div>
 
                         </form>
@@ -190,7 +190,7 @@ export default {
     data(){
         return{
             hideBtn:true,
-            regex:/^[\w-.]+@([\w-]+\.)+[\w-]{2,}$/g,
+            regex:/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
             employees:[],
             modalTitle:"",
             EmplpoyeeId:0,
@@ -230,7 +230,7 @@ export default {
 
             if (this.EmployeeBirthday === "") {
                 errors += "Introdu data nasterii.\n";
-            } else if (!this.getAge(this.EmployeeBirthday) < 16) {
+            } else if (this.getAge() < 16) {
                 errors += "Trebuie sa ai peste 16 ani.\n";
             }
             if (errors.length === 0) return true;
@@ -304,7 +304,7 @@ export default {
         },
 
         updateClick() {
-            axios.post(`${variables.API_URL}Employee`,{
+            axios.put(`${variables.API_URL}Employee`,{
                 ProfilePhoto:this.ProfilePhoto,
                 EmployeeLastName:this.EmployeeLastName,
                 EmployeeFirstName:this.EmployeeFirstName,
@@ -312,14 +312,13 @@ export default {
                 EmployeeGender:this.EmployeeGender,
                 EmployeeBirthday:this.EmployeeBirthday,
             })
-            .then(response => {
-                this.employees = response.data;
+            .then(() => {
                 this.refreshData();
             });
         },
 
         deleteClick(id) {
-            if(!confirm("Are you sure?")){
+            if(!confirm("Esti sigur ca vrei sa stergi ?")){
                 return;
             }
             axios.delete(`${variables.API_URL}Employee/`+id)
@@ -328,19 +327,30 @@ export default {
                 this.refreshData();
             });
         },
-        
 
         imageUpload(event){
-            let formData=new FormData();
-            formData.append('file',event.target.files[0]);
-            axios.post(
-                `${variables.API_URL}Employee/SaveFile`,
-                formData)
-                .then((response)=>{
-                    this.ProfilePhoto=response.data;
-                }
-            );
+            var input = event.target;
+            var reader = new FileReader();
+            if (input.files && input.files[0]) {
+                reader.onload = (e) => {
+                    this.ProfilePhoto = e.target.result;
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
         },
+
+        // imageUpload(event){
+        //     let formData=new FormData();
+        //     formData.append('file', event.target.files[0]);
+
+        //     axios.post(
+        //         `${variables.API_URL}Employee/SaveFile`,
+        //         formData)
+        //         .then((response)=>{
+        //             this.ProfilePhoto=response.data;
+        //         }
+        //     );
+        // },
 
     },
 
@@ -438,8 +448,13 @@ td {
 }
 
 .picture {
-  height: 80;
-  width: 80;
+  height: 80px;
+  width: 80px;
   border-radius: 50%;
+}
+
+.picture-preview {
+  height: 150px;
+  width: 150px;
 }
 </style>
