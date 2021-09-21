@@ -12,7 +12,7 @@
             <div class="search-bar">
                 <div class="input-group">
                     <div class="form-outline">
-                        <input type="search" class="form-control" placeholder="Caută angajat ..." v-model="filterText"/>
+                        <input type="search" class="form-control" placeholder="Caută angajat ..."/>
                     </div>
                 </div>
             </div>
@@ -323,17 +323,17 @@ export default {
         },
         
 
-        // imageUpload(event){
-        //     let formData=new FormData();
-        //     formData.append('file',event.target.files[0]);
-        //     axios.post(
-        //         variables.API_URL+"employee/savefile",
-        //         formData)
-        //         .then((response)=>{
-        //             this.ProfilePhoto=response.data;
-        //         }
-        //     );
-        // },
+        imageUpload(event){
+            let formData=new FormData();
+            formData.append('file',event.target.files[0]);
+            axios.post(
+                `${variables.API_URL}Employee/SaveFile`,
+                formData)
+                .then((response)=>{
+                    this.ProfilePhoto=response.data;
+                }
+            );
+        },
 
     },
 
