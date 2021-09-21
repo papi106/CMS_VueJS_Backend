@@ -187,6 +187,7 @@ export default {
 
     data(){
         return{
+            regex:/^[\w-.]+@([\w-]+\.)+[\w-]{2,}$/g,
             employees:[],
             modalTitle:"",
             EmplpoyeeId:0,
@@ -201,6 +202,41 @@ export default {
     },
 
     methods: {
+        validateForm() {
+            if (this.EmployeeLastName === "") {
+                alert ("Introdu numele !");
+                return false;
+            }
+
+            if (this.EmployeeFirstName === "") {
+                alert ("Introdu prenumele !");
+                return false;
+            }
+
+            if (this.EmployeeEmail === "") {
+                alert ("Introdu un email !");
+                return false;
+            } else {
+                if (!this.regex.test(this.EmployeeEmail)) {
+                    alert('Emailul este invalid! Introdu un email valid.');
+                    return false;
+                }
+            }
+
+            if (this.EmployeeGender === "") {
+                alert ("Introdu sexul !");
+                return false;
+            }
+
+            if (this.EmployeeBirthday === "") {
+                alert ("Introdu data nasterii !");
+                return false;
+            } else if (!this.getAge(this.EmployeeBirthday) < 16) {
+                alert('Trebuie sa ai minim 16 ani.');
+                return false;
+            }
+            return true;
+        },
 
         getNormalBirthdate(date) {
             return moment(date, "YYYY-MM-DD").format("D MMMM YYYY");
@@ -211,10 +247,10 @@ export default {
             var diff = new Date(Date.now() - birthdate.getTime());
             var age = diff.getUTCFullYear() - 1970;
 
-            return age >= 16;
+            return age;
         },
 
-        refreshData(){
+        refreshData() {
             axios.get(`${variables.API_URL}Employee`)
                 .then(response => {
                     this.employees = response.data;
@@ -237,52 +273,21 @@ export default {
         },
 
         createClick(){
-            if (this.EmployeeLastName === "") {
-                alert ("Introdu numele!");
-                return false;
+            if(this.validateForm()) {
+                axios.post(`${variables.API_URL}Employee`,{
+                    ProfilePhoto:this.ProfilePhoto,
+                    EmployeeLastName:this.EmployeeLastName,
+                    EmployeeFirstName:this.EmployeeFirstName,
+                    EmployeeEmail:this.EmployeeEmail,
+                    EmployeeGender:this.EmployeeGender,
+                    EmployeeBirthday:this.EmployeeBirthday,
+
+                })
+                .then(response => {
+                    this.employees = response.data;
+                    this.refreshData();
+                });
             }
-
-            if (this.EmployeeFirstName === "") {
-                alert ("Introdu prenumele!");
-                return false;
-            }
-
-            if (this.EmployeeEmail === "") {
-                alert ("Introdu un email!");
-                return false;
-            // } else {
-            //     if (!regex.test(this.EmployeeEmail)) {
-            //         alert('Emailul este invalid! Introdu un email valid.');
-            //         return false;
-            //     }
-            }
-
-            if (this.EmployeeGender === "") {
-                alert ("Introdu sexul!");
-                return false;
-            }
-
-            if (this.EmployeeBirthday === "") {
-                alert ("Introdu data nasterii!");
-                return false;
-            // } else if (!getAge(this.EmployeeBirthday)) {
-            //     alert('Trebuie sa ai minim 16 ani.');
-            //     return false;
-            } 
-
-            axios.post(`${variables.API_URL}Employee`,{
-                ProfilePhoto:this.ProfilePhoto,
-                EmployeeLastName:this.EmployeeLastName,
-                EmployeeFirstName:this.EmployeeFirstName,
-                EmployeeEmail:this.EmployeeEmail,
-                EmployeeGender:this.EmployeeGender,
-                EmployeeBirthday:this.EmployeeBirthday,
-
-            })
-            .then(response => {
-                this.employees = response.data;
-                this.refreshData();
-            });
         },
 
         editClick(emp){
