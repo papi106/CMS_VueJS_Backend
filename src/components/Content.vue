@@ -70,7 +70,7 @@
                     </thead>
                     <tbody>
                         <tr v-for="emp in employees" v-bind:key="emp">
-                            <td>{{ emp.ProfilePhoto }}</td>
+                            <td><img :src="PhotoPath+ProfilePhoto" style="height:80px !important;"></td>
                             <td>{{ emp.EmployeeLastName }}</td>
                             <td>{{ emp.EmployeeFirstName }}</td>
                             <td>{{ emp.EmployeeEmail }}</td>
@@ -149,9 +149,9 @@
                     
                             <div class="mb-3">
                                 <label for="picture" class="form-label">Adaugă poză</label>
-                                <input class="form-control" type="file" id="picture" @change="imageUpload(this)" accept="image/*">
+                                <input class="form-control" type="file" id="picture" @change="saveImageUpload">
                                 <br>
-                                <img class="picture-preview" :src="PhotoPath+ProfilePhoto" id="imgPreview">
+                                <img class="picture-preview" :src="PhotoPath+ProfilePhoto">
                             </div>
 
                         </form>
@@ -205,51 +205,6 @@ export default {
     },
 
     methods: {
-        validateForm() {
-            var errors="";
-
-            if (this.EmployeeLastName === "") {
-                errors += "Introdu numele de familie.\n";
-            }
-
-            if (this.EmployeeFirstName === "") {
-                errors += "Introdu prenumele.\n";
-            }
-
-            if (this.EmployeeEmail === "") {
-                errors += "Introdu un email.\n";
-            } else {
-                if (!this.regex.test(this.EmployeeEmail)) {
-                    errors += "Email invalid. Introdu un email valid.\n";
-                }
-            }
-
-            if (this.EmployeeGender === "") {
-                errors += "Alege sexul.\n";
-            }
-
-            if (this.EmployeeBirthday === "") {
-                errors += "Introdu data nasterii.\n";
-            } else if (this.getAge() < 16) {
-                errors += "Trebuie sa ai peste 16 ani.\n";
-            }
-            if (errors.length === 0) return true;
-            alert(errors);
-            return false;
-        },
-
-        getNormalBirthdate(date) {
-            return moment(date, "YYYY-MM-DD").format("D MMMM YYYY");
-        },
-
-        getAge() {
-            var birthdate = new Date(birthdate);
-            var diff = new Date(Date.now() - birthdate.getTime());
-            var age = diff.getUTCFullYear() - 1970;
-
-            return age;
-        },
-
         refreshData() {
             axios.get(`${variables.API_URL}Employee`)
                 .then(response => {
@@ -333,30 +288,82 @@ export default {
             });
         },
 
-        imageUpload(event){
-            var input = event.target;
+        imageUpload(fileInput){
+            var imageFile = fileInput.files[0];
+            var img = document.getElementById("ProfilePhoto");
+            var imageType = /assets.*/;
+
+            if (imageFile.type.match(imageType)) {
+            img.file = imageFile;
+        
             var reader = new FileReader();
-            if (input.files && input.files[0]) {
-                reader.onload = (e) => {
-                    this.ProfilePhoto = e.target.result;
+            reader.onload = (function (img) {
+                return function (e) {
+                img.src = e.target.result;
                 };
-                reader.readAsDataURL(input.files[0]);
+            })(img);
+            reader.readAsDataURL(imageFile);
             }
         },
 
-        // imageUpload(event){
-        //     let formData=new FormData();
-        //     formData.append('file', event.target.files[0]);
+        saveImageUpload(event){
+            let formData=new FormData();
+            formData.append('file', event.target.files[0]);
 
-        //     axios.post(
-        //         `${variables.API_URL}Employee/SaveFile`,
-        //         formData)
-        //         .then((response)=>{
-        //             this.ProfilePhoto=response.data;
-        //         }
-        //     );
-        // },
+            axios.post(
+                `${variables.API_URL}Employee/SaveFile`,
+                formData)
+                .then((response)=>{
+                    this.ProfilePhoto = response.data;
+                }
+            );
+        },
 
+        validateForm() {
+            var errors="";
+
+            if (this.EmployeeLastName === "") {
+                errors += "Introdu numele de familie.\n";
+            }
+
+            if (this.EmployeeFirstName === "") {
+                errors += "Introdu prenumele.\n";
+            }
+
+            if (this.EmployeeEmail === "") {
+                errors += "Introdu un email.\n";
+            } else {
+                if (!this.regex.test(this.EmployeeEmail)) {
+                    errors += "Email invalid. Introdu un email valid.\n";
+                }
+            }
+
+            if (this.EmployeeGender === "") {
+                errors += "Alege sexul.\n";
+            }
+
+            if (this.EmployeeBirthday === "") {
+                errors += "Introdu data nasterii.\n";
+            } else if (this.getAge() < 16) {
+                errors += "Trebuie sa ai peste 16 ani.\n";
+            }
+            if (errors.length === 0) return true;
+
+            alert(errors);
+            return false;
+        },
+
+        getNormalBirthdate(date) {
+            return moment(date, "YYYY-MM-DD").format("D MMMM YYYY");
+        },
+
+        getAge() {
+            var birthdate = new Date(birthdate);
+            var diff = new Date(Date.now() - birthdate.getTime());
+            var age = diff.getUTCFullYear() - 1970;
+
+            return age;
+        },
     },
 
     mounted() {
@@ -461,7 +468,6 @@ td {
 }
 
 .picture-preview {
-  height: 150px;
-  width: 150px;
+  height: 100px;
 }
 </style>
