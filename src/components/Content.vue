@@ -286,6 +286,7 @@ export default {
                 })
                 .then(response => {
                     this.employees = response.data;
+                    console.log(response.data);
                     this.refreshData();
                 });
             }
@@ -305,6 +306,7 @@ export default {
 
         updateClick() {
             axios.put(`${variables.API_URL}Employee`,{
+                EmployeeId:this.EmployeeId,
                 ProfilePhoto:this.ProfilePhoto,
                 EmployeeLastName:this.EmployeeLastName,
                 EmployeeFirstName:this.EmployeeFirstName,
@@ -312,8 +314,10 @@ export default {
                 EmployeeGender:this.EmployeeGender,
                 EmployeeBirthday:this.EmployeeBirthday,
             })
-            .then(() => {
+            .then((response) => {
                 this.refreshData();
+                this.employees=response.data;
+                console.log(response.data);
             });
         },
 
@@ -324,6 +328,7 @@ export default {
             axios.delete(`${variables.API_URL}Employee/`+id)
             .then(response => {
                 this.employees = response.data;
+                console.log(response.data);
                 this.refreshData();
             });
         },

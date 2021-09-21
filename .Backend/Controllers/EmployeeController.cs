@@ -31,9 +31,10 @@ namespace Backend_CMS.Controllers
         public JsonResult Get()
         {
             string query = @"
-             select EmployeeId, EmployeeFirstName, EmployeeLastName, EmployeeEmail, EmployeeGender, EmployeeBirthday, ProfilePhoto from
-             dbo.Employee
-             ";
+                select EmployeeId, EmployeeFirstName, EmployeeLastName, EmployeeEmail, EmployeeGender, 
+                convert(varchar(10),EmployeeBirthday,120) as EmployeeBirthday, ProfilePhoto from
+                dbo.Employee
+                ";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("EmployeeAppCon");
             SqlDataReader myReader;
