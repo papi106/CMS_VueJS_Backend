@@ -161,12 +161,14 @@
                         <button type="submit" class="btn btn-secondary close-myModal" data-bs-dismiss="modal">Renunță</button>
 
                         <button type="submit" class="btn" style="background-color:#27496D; color:white;" data-bs-dismiss="modal"
-                            @click="createClick()">
+                            @click="createClick()"
+                            v-show="hideBtn">
                             Adaugă angajat
                         </button>
 
                         <button type="submit" class="btn" style="background-color:#27496D; color:white;" data-bs-dismiss="modal"
-                            @click="updateClick()">
+                            @click="updateClick()"
+                            v-show="!hideBtn">
                             Actualizează angajat
                         </button>
                     </div>
@@ -187,6 +189,7 @@ export default {
 
     data(){
         return{
+            hideBtn:true,
             regex:/^[\w-.]+@([\w-]+\.)+[\w-]{2,}$/g,
             employees:[],
             modalTitle:"",
@@ -203,39 +206,36 @@ export default {
 
     methods: {
         validateForm() {
+            var errors="";
+
             if (this.EmployeeLastName === "") {
-                alert ("Introdu numele !");
-                return false;
+                errors += "Introdu numele de familie.\n";
             }
 
             if (this.EmployeeFirstName === "") {
-                alert ("Introdu prenumele !");
-                return false;
+                errors += "Introdu prenumele.\n";
             }
 
             if (this.EmployeeEmail === "") {
-                alert ("Introdu un email !");
-                return false;
+                errors += "Introdu un email.\n";
             } else {
                 if (!this.regex.test(this.EmployeeEmail)) {
-                    alert('Emailul este invalid! Introdu un email valid.');
-                    return false;
+                    errors += "Email invalid. Introdu un email valid.\n";
                 }
             }
 
             if (this.EmployeeGender === "") {
-                alert ("Introdu sexul !");
-                return false;
+                errors += "Alege sexul.\n";
             }
 
             if (this.EmployeeBirthday === "") {
-                alert ("Introdu data nasterii !");
-                return false;
+                errors += "Introdu data nasterii.\n";
             } else if (!this.getAge(this.EmployeeBirthday) < 16) {
-                alert('Trebuie sa ai minim 16 ani.');
-                return false;
+                errors += "Trebuie sa ai peste 16 ani.\n";
             }
-            return true;
+            if (errors.length === 0) return true;
+            alert(errors);
+            return false;
         },
 
         getNormalBirthdate(date) {
@@ -262,6 +262,7 @@ export default {
         },
 
         addClick(){
+            this.hideBtn=true,
             this.modalTitle="Add Employee",
             this.EmplpoyeeId=0,
             this.ProfilePhoto="profile_pic.png",
@@ -291,6 +292,7 @@ export default {
         },
 
         editClick(emp){
+            this.hideBtn=false,
             this.modalTitle="Edit Employee",
             this.EmployeeId=emp.EmployeeId,
             this.ProfilePhoto=emp.ProfilePhoto,
