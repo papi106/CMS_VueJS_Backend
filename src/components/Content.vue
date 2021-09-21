@@ -309,7 +309,19 @@ export default {
                 this.employees = response.data;
                 this.refreshData();
             });
-        }
+        },
+
+        deleteClick(id) {
+            if(!confirm("Are you sure?")){
+                return;
+            }
+            axios.delete(`${variables.API_URL}Employee/`+id)
+            .then(response => {
+                this.employees = response.data;
+                this.refreshData();
+            });
+        },
+        
 
         // imageUpload(event){
         //     let formData=new FormData();
