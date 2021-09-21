@@ -39,6 +39,19 @@ header {
   .nav {
     justify-content: center;
   }
+    #table-employees {
+    width:65rem !important;
+    margin-left: 5rem;
+  }
+
+  .search-sort {
+    margin-left: 5rem;
+  }
+
+  .filter {
+    margin-left: 5rem;
+  }
+
 }
 
 @media only screen and (max-width: 650px) {
@@ -47,7 +60,7 @@ header {
   }
 }
 
-@media only screen and (max-width: 550px) {
+@media only screen and (max-width: 630px) {
   .filter {
     display: flex;
     flex-direction: column;

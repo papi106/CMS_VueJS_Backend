@@ -385,11 +385,13 @@ export default {
 
 table {
   table-layout: fixed;
+  border-collapse: collapse;
   word-wrap: break-word;
   margin: auto;
   width: 80% !important;
   font-family: "Karla", sans-serif;
   text-align: center;
+  z-index: 0;
 }
 
 table th {
@@ -449,7 +451,7 @@ td {
 }
 
 .filtru-txt {
-  margin-right: 2%;
+  margin-right: 1rem;
 }
 
 .picture {
