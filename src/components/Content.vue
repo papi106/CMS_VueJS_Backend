@@ -178,14 +178,6 @@
 
 <script>
 
-//import axios from "axios";
-//import moment from "moment";
-
-// const variables = {
-//   API_URL: "http://localhost:31080/api/",
-//   PHOTO_URL: "http://localhost:31080/photos/",
-// };
-
 </script>
 
 
