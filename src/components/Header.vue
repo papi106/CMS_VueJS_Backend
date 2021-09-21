@@ -1,23 +1,22 @@
 <template>
-
-    <header>
-        <div class="nav">
-            <div class="navlogo"><a class="logo" href="#">Content Management System</a></div>
-            <div class="navitems">
-                <nav>
-                    <ul class="nav-ul">
-                        <li><a href="#">Acasă</a></li>
-                        <li><a href="#">Autentificare</a></li>
-                    </ul>
-                </nav>
-            </div>
-        </div>
-    </header>
-
+  <header>
+    <div class="nav">
+      <div class="navlogo">
+        <a class="logo" href="#">Content Management System</a>
+      </div>
+      <div class="navitems">
+        <nav>
+          <ul class="nav-ul">
+            <li><a href="#">Acasă</a></li>
+            <li><a href="#">Autentificare</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
 </template>
 
-<style>
-
+<style scoped>
 .nav {
   display: flex;
   justify-content: space-between;
