@@ -75,7 +75,7 @@
                             <td>{{ emp.EmployeeFirstName }}</td>
                             <td>{{ emp.EmployeeEmail }}</td>
                             <td>{{ emp.EmployeeGender }}</td>
-                            <td>{{ emp.EmployeeBirthday }}</td>
+                            <td>{{ getNormalBirthdate(emp.EmployeeBirthday) }}</td>
                             <td>
                                 <div class="action-buttons">
                                     <span type="button" data-bs-toggle="modal" data-bs-target="#myModal" @click="editClick(emp)">
@@ -175,6 +175,7 @@
 <script>
 
 import axios from "axios";
+import moment from "moment";
 import variables from "./../variables";
 
 export default {
@@ -195,6 +196,11 @@ export default {
     },
 
     methods: {
+
+        getNormalBirthdate(date) {
+            return moment(date, "YYYY-MM-DD").format("D MMMM YYYY");
+        },
+
         refreshData(){
             axios.get(`${variables.API_URL}Employee`)
                 .then(response => {
@@ -230,24 +236,20 @@ export default {
             .then(response => {
                 this.employees = response.data;
                 this.refreshData();
-            })
-            .catch(error => {
-                this.errorMessage = error.message;
-                console.error("There was an error!", error);
             });
         },
 
-        // editClick(emp){
-        //     this.modalTitle="Edit Employee",
-        //     this.EmployeeId=emp.EmployeeId,
-        //     this.ProfilePhoto=emp.ProfilePhoto,
-        //     this.EmployeeLastName=emp.EmployeeName,
-        //     this.EmployeeFirstName=emp.EmployeeFirstName,
-        //     this.EmployeeEmail=emp.EmployeeEmail,
-        //     this.EmployeeGender=emp.EmployeeGender,
-        //     this.EmployeeBirthday=emp.EmployeeBirthday
+        editClick(emp){
+            this.modalTitle="Edit Employee",
+            this.EmployeeId=emp.EmployeeId,
+            this.ProfilePhoto=emp.ProfilePhoto,
+            this.EmployeeLastName=emp.EmployeeName,
+            this.EmployeeFirstName=emp.EmployeeFirstName,
+            this.EmployeeEmail=emp.EmployeeEmail,
+            this.EmployeeGender=emp.EmployeeGender,
+            this.EmployeeBirthday=emp.EmployeeBirthday
 
-        // },
+        },
 
         // imageUpload(event){
         //     let formData=new FormData();
