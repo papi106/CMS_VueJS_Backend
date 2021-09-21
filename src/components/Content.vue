@@ -69,7 +69,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="emp in employees" v-bind:key="emp" v-bind:emp="emp" @click="filteredEmployees">
+                        <tr v-for="emp in employees" v-bind:key="emp">
                             <td>{{ emp.ProfilePhoto }}</td>
                             <td>{{ emp.EmployeeLastName }}</td>
                             <td>{{ emp.EmployeeFirstName }}</td>
@@ -77,12 +77,16 @@
                             <td>{{ emp.EmployeeGender }}</td>
                             <td>{{ moment(emp.EmployeeBirthday).format("DD MMM YYYY") }}</td>
                             <td class="action-buttons">
-                                <div @click="editClick(emp)"><img src="../assets/edit.svg"></div> |
-                                <div @click="deleteClick(emp)"><img src="../assets/trash.svg"></div>
+                                <button type="button" data-bs-toggle="modal" data-bs-target="#myModal" @click="editClick(emp)">
+                                    <img src="../assets/edit.svg">
+                                </button>
+                                <button type="button" @click="deleteClick(emp.EmployeeId)">
+                                    <img src="../assets/trash.svg">
+                                </button>
                             </td>
                         </tr>
                     </tbody>
-                  </table>            
+                </table>            
             </div>
         </div>
 
@@ -125,7 +129,8 @@
                             
                             <div class="mb-3">
                                 <label for="gender-input" class="form-label">Sex</label>
-                                <select class="form-select" id="gender-input" required v-model="EmployeeGender">
+                                <select class="form-select" id="gender-input" required 
+                                v-model="EmployeeGender">
                                     <option value="" selected disabled>Selectați sexul</option>
                                     <option value="Masculin">Masculin</option>
                                     <option value="Feminin">Feminin</option>
@@ -135,14 +140,15 @@
                 
                             <div class="mb-3">
                                 <label for="birthdate-input" class="form-label">Data nașterii</label>
-                                <input type="date" class="form-control" id="birthdate-input" placeholder="" required v-model="EmployeeBirthday">
+                                <input type="date" class="form-control" id="birthdate-input" placeholder="" required 
+                                v-model="EmployeeBirthday">
                             </div>
                     
                             <div class="mb-3">
                                 <label for="picture" class="form-label">Adaugă poză</label>
                                 <input class="form-control" type="file" id="picture" @change="imageUpload">
                                 <br>
-                                <img :src="PhotoPath + ProfilePhoto" height=150>
+                                <img width="150px" height="150px" :src="PhotoPath+ProfilePhoto">
                             </div>
 
                         </form>
@@ -172,110 +178,14 @@
 
 <script>
 
-import axios from "axios";
-import moment from "moment";
+//import axios from "axios";
+//import moment from "moment";
 
-const variables = {
-  API_URL: "http://localhost:31080/api/",
-  PHOTO_URL: "http://localhost:31080/photos/",
-};
+// const variables = {
+//   API_URL: "http://localhost:31080/api/",
+//   PHOTO_URL: "http://localhost:31080/photos/",
+// };
 
-//const reg = /^[w-.]+@([w-]+.)+[w-]{2,}$/g;
-
-export default {
-    data() {
-        return {
-            employees: [],
-            filterText: "",
-            modalTitle: "",
-            EmployeeId: 0,
-            EmployeeFirstName: "",
-            EmployeeLastName: "",
-            EmployeeEmail: "",
-            EmployeeGender: "",
-            EmployeeBirthday: "",
-            ProfilePhoto: "profile_pic.png",
-            PhotoPath: variables.PHOTO_URL,
-        };
-    },
-
-    methods: {
-
-        moment: moment,
-
-        refreshData() {
-            axios.get(variables.API_URL + "employee").then((response) => {
-                this.employees = response.data;
-            });
-        },
-
-        addClick() {
-        this.modalTitle = "Add Employee";
-        this.EmployeeId = 0;
-        this.EmployeeLastName = "";
-        this.EmployeeFirstName = "";
-        this.EmployeeEmail = "";
-        this.EmployeeGender = "";
-        this.EmployeeBirthday = "",
-        this.ProfilePhoto = "profile_pic.png";
-        },
-
-        editClick(emp) {
-            this.modalTitle = "Edit Employee";
-            this.EmployeeId = emp.EmployeeId;
-            this.EmployeeLastName = emp.EmployeeLastName;
-            this.EmployeeFirstName = emp.EmployeeFirstName;
-            this.EmployeeEmail = emp.EmployeeEmail;
-            this.EmployeeGender = emp.EmployeeGender;
-            this.EmployeeBirthday = emp.EmployeeBirthday;
-            this.ProfilePhoto = emp.ProfilePhoto;
-        },
-
-        createClick() {
-            this.EmployeeBirthday = moment(this.EmployeeBirthday);
-            
-            if (this.EmployeeLastName === "") {
-                alert("Enter Last Name");
-                return false;
-            }
-            if (this.EmployeeFirstName === "") {
-                alert("Enter First Name");
-                return false;
-            }
-            if (this.EmployeeEmail === "") {
-                alert("Enter Email");
-                return false;
-            }
-            if (this.EmployeeGender === "") {
-                alert("Enter Gender");
-                return false;
-            }
-            if (this.EmployeeBirthday === "") {
-                alert("Enter Birthday");
-                return false;
-            }
-            //if (!reg.test(this.EmployeeEmail)) {
-            //    alert("Email not valid.");
-            //    return false;
-            //}
-
-            axios
-                .post(variables.API_URL + "employee", {
-                    EmployeeLastName: this.EmployeeLastName,
-                    EmployeeFirstName: this.EmployeeFirstName,
-                    EmployeeEmail: this.EmployeeEmail,
-                    EmployeeGender: this.EmployeeGender,
-                    EmployeeBirthday: this.EmployeeBirthday,
-                    ProfilePhoto: this.ProfilePhoto,
-                })
-                .then((response) => {
-                    this.refreshData();
-                        alert(response.data);
-                });
-            },
-            
-    },
-};
 </script>
 
 
