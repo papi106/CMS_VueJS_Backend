@@ -10,9 +10,10 @@
 - [x] Employee properties: first name, last name, email, sex, birth date, profile picture.
 - [x] Application must be fully responsive.
 
-BONUS topics (done either server-side or locally): 
-- [x] search (by name and email);
-- [x] sort (alphabetic after first name / last name, after date of birth);
+BONUS topics (done either server-side or locally):
+
+- [ ] search (by name and email);
+- [ ] sort (alphabetic after first name / last name, after date of birth);
 - [ ] filter (after sex, range for date of birth, has profile picture).
 
 ## Requirements Backend:
@@ -30,24 +31,29 @@ I recommend you use axios to communicate with the backend.
 # project
 
 ## Project setup
+
 ```
 npm install
 ```
 
 ### Compiles and hot-reloads for development
+
 ```
 npm run serve
 ```
 
 ### Compiles and minifies for production
+
 ```
 npm run build
 ```
 
 ### Lints and fixes files
+
 ```
 npm run lint
 ```
 
 ### Customize configuration
+
 See [Configuration Reference](https://cli.vuejs.org/config/).
